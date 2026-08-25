@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.table {
+  @apply w-full bg-mist-200 border border-mist-500;
+}
+
+.table-header {
+  @apply bg-mist-300;
+}
+
+.table-row {
+  @apply border-b border-mist-400;
+}
+
+.table-cell {
+  @apply px-4 py-2 text-mist-900;
+}

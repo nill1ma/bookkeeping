@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+.table-cell {
+  padding: 12px;
+}
