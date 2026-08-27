@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+.form {
+  @apply flex flex-col gap-2;
+}
+
+.input {
+  @apply border border-gray-300 rounded px-2 py-1;
+}
+
+.button {
+  @apply w-25;
+}
+
+.tabs {
+  @apply list-none flex gap-4;
+}
+
+.tab {
+  @apply cursor-pointer border p-3.5;
+}
+
+.active {
+  @apply bg-blue-500 text-white;
+}

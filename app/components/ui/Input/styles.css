@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+.input-control {
+  @apply flex flex-col gap-1;
+}
+
 input {
   @apply border border-gray-300 rounded px-2 py-1;
 }

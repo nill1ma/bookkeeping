@@ -16,13 +16,8 @@ export default async function List() {
     const incomings = await getIncomings();
     const expenses = await getExpenses();
 
-     const data = aggregateByReference(incomings || [], expenses || []);
+    const data = aggregateByReference(incomings || [], expenses || []);
  
-    console.log("data 16: ", data);
-    console.log("expenses 16: ", expenses);
-    data?.forEach((item) => {
-      console.log("item: ", item);
-    });
    
   return (
     <Table.Table className="table">

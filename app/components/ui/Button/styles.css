@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+.button {
+  @apply px-4 py-2 rounded-md;
+}
+
+.button--primary {
+  @apply bg-blue-500 text-white;
+}
+
+.button--secondary {
+  @apply bg-gray-500 text-white;
+}
+
+.button--danger {
+  @apply bg-red-500 text-white;
+}
+
+.cursor-pointer {
+  @apply cursor-pointer;
+}
+
+.cursor-not-allowed {
+  @apply cursor-not-allowed;
+}

@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, createBrowserClient as createSupabaseBrowserClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { Database } from './supabase.types'
 
@@ -25,4 +25,8 @@ export async function createClient() {
       },
     },
   })
+}
+
+export function createBrowserClient() {
+  return createSupabaseBrowserClient<Database>(supabaseUrl, supabaseKey)
 }
