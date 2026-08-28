@@ -13,6 +13,16 @@ export async function getIncomings() {
 
 }
 
+export async function getIncomingByReference(reference: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('incomings')
+    .select('*')
+    .eq('reference', reference)
+  if (error) throw error.message
+  return data
+}
+
 export async function createIncoming(
   // Omitimos o 'id' (gerado pelo banco) e o 'user_id' (injetado pelo backend)
   formData: Omit<Database['public']['Tables']['incomings']['Insert'], 'id' | 'user_id'>

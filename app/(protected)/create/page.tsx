@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from "react"
 import "./styles.css"
 import { IncomingForm, ExpenseForm } from "@/app/components/forms"

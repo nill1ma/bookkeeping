@@ -13,6 +13,16 @@ export async function getExpenses() {
 
 }
 
+export async function getExpenseByReference(reference: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('expenses')
+    .select('*')
+    .eq('reference', reference)
+  if (error) throw error.message
+  return data
+}
+
 export async function createExpense(
   // Omitimos o 'id' (gerado pelo banco) e o 'user_id' (injetado pelo backend)
   formData: Omit<Database['public']['Tables']['expenses']['Insert'], 'id' | 'user_id'>

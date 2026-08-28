@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+h3 {
+    @apply mb-2 mt-2;
+}

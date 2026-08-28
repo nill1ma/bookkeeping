@@ -13,8 +13,8 @@ export function TableBody({ children, className }: { children: React.ReactNode; 
   return <tbody className={`${className || ''}`}>{children}</tbody>;
 }
 
-export function TableRow({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <tr className={`${className || ''}`}>{children}</tr>;
+export function TableRow({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) {
+  return <tr onClick={onClick} className={`${className || ''}`}>{children}</tr>;
 }
 
 export function TableCell({ children, className }: { children: React.ReactNode; className?: string }) {

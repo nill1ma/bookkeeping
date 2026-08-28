@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.card-container {
+    @apply rounded-sm w-full border border-gray-200;
+}
+
+.card-item {
+    @apply p-2 flex flex-col;
+}
