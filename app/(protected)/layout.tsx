@@ -1,12 +1,11 @@
 import "@/app/globals.css";
 import Sidebar from "../components/sidebar/sidebar";
+import Header from "../components/header/header";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <>
-      <header>
-        <h1>Bookkeeping</h1>
-      </header>
+      <Header />
       <Sidebar />
       <main>{children}</main>
     </>

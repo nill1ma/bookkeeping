@@ -1,17 +1,22 @@
 @import "tailwindcss";
 
 .table {
-  @apply w-full bg-mist-200 border border-mist-500;
+  @apply w-full rounded-lg overflow-hidden;
+  @apply bg-[#121212] border border-[#2a2a2a];
 }
 
 .table-header {
-  @apply bg-mist-300;
+  @apply bg-[#1a1a1a];
 }
 
 .table-row {
-  @apply border-b border-mist-400;
+  @apply border-b border-[#2a2a2a];
+}
+
+.table-row:hover {
+  @apply bg-[#1f1f1f];
 }
 
 .table-cell {
-  @apply px-4 py-2 text-mist-900;
+  @apply px-4 py-2 text-[#e5e5e5];
 }

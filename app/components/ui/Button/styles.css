@@ -1,19 +1,31 @@
 @import "tailwindcss";
 
 .button {
-  @apply px-4 py-2 rounded-md;
+  @apply px-4 py-2 rounded-lg font-medium transition-colors;
 }
 
 .button--primary {
-  @apply bg-blue-500 text-white;
+  @apply bg-[#4d7c0f] text-white;
+}
+
+.button--primary:hover {
+  @apply bg-[#65a30d];
 }
 
 .button--secondary {
-  @apply bg-gray-500 text-white;
+  @apply bg-[#121212] text-[#e5e5e5];
+}
+
+.button--secondary:hover {
+  @apply bg-[#1f1f1f];
 }
 
 .button--danger {
-  @apply bg-red-500 text-white;
+  @apply bg-[#b91c1c] text-white;
+}
+
+.button--danger:hover {
+  @apply bg-[#dc2626];
 }
 
 .cursor-pointer {

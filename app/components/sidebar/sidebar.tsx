@@ -1,23 +1,15 @@
 "use client"
 
 import Link from "next/link";
-import { logout } from "@/app/services/auth/auth";
+import "./styles.css";
 
 export default function Sidebar() {
-
-  async function handleLogout() {
-    await logout();
-  }
-
   return (
-    <aside>
+    <aside className="sidebar">
       <ul>
-        <Link href="/create"><li>Create</li></Link>
-        <Link href="/list"><li>List</li></Link>
+        <Link href="/list"><li className="sidebar-link">List</li></Link>
+        <Link href="/create"><li className="sidebar-link">Create</li></Link>
       </ul>
-      <form action={handleLogout}>
-        <button type="submit">Logout</button>
-      </form>
     </aside>
   );
 }

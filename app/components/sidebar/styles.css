@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+.sidebar {
+  @apply flex flex-col gap-2;
+}
+
+.sidebar-link {
+  @apply px-4 py-2 rounded-lg transition-colors;
+  @apply text-[#e5e5e5];
+}
+
+.sidebar-link:hover {
+  @apply bg-[#1f1f1f] text-[#a3e635];
+}
+
+.sidebar-link--active {
+  @apply bg-[#1f1f1f] text-[#a3e635] font-medium;
+}
