@@ -8,30 +8,42 @@ import { getExpenseByReference } from "@/app/services/expenses/expenses";
 import CardContainer from "@/app/components/card/card";
 import CardItem from "@/app/components/card/cardItem";
 import "./styles.css";
+import { useLoading } from "@/app/hooks/useLoading/useLoading";
 
 export default function Details() {
 
      const [incomingData, setIncomingData] = useState<any[]>([]);
-    const [expenseData, setExpenseData] = useState<any[]>([]);
-
+     
+     const [expenseData, setExpenseData] = useState<any[]>([]);
+     
+     const { setLoading, Loading } = useLoading();
      const params = useParams();
      const reference = decodeURIComponent(params.reference as string);
      useEffect(() => {
-            async function loadData() {
-                try {
-            const incomings = await getIncomingByReference(reference);
-            const expenses = await getExpenseByReference(reference);
-    
-            setIncomingData(incomings);
-            setExpenseData(expenses);
-          } catch (error) {
-            console.error(error);
-          } finally {
-            // setLoading(false);
-          }
+          async function loadData() {
+            try {
+              setLoading(true);
+              // In list page - make calls in parallel
+              const [incomings, expenses] = await Promise.all([
+                getIncomingByReference(reference),
+                getExpenseByReference(reference)
+              ]);
+      
+              setIncomingData(incomings);
+              setExpenseData(expenses);
+            } catch (error) {
+              console.error(error);
+            } finally {
+              setLoading(false);
+            }
         }
         loadData();
       }, [reference]);
+
+      if(Loading) {
+        return <Loading />;
+      }
+    
     return (
       <div>
         Reference: {reference}

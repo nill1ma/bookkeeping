@@ -6,6 +6,7 @@ import "./styles.css";
 import { aggregateByReference } from "./utils";
 import { useEffect, useState } from "react";
 import { redirect } from "next/navigation";
+import {useLoading}  from "@/app/hooks/useLoading/useLoading";
 
 export default function List() {
     const columns = [
@@ -16,48 +17,58 @@ export default function List() {
     ]
 
     const [data, setData] = useState<any[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    const { setLoading, Loading } = useLoading();
 
     useEffect(() => {
-        async function loadData() {
-        const incomings = await getIncomings();
-        const expenses = await getExpenses();
-
-        const aggregated = aggregateByReference(incomings || [], expenses || []);
-        setData(aggregated);
-        setLoading(false);
+      async function loadData() {
+        try {
+          setLoading(true);
+          const [incomings, expenses] = await Promise.all([
+            getIncomings(),
+            getExpenses()
+          ]);
+          const aggregated = aggregateByReference(incomings || [], expenses || []);
+          setData(aggregated);
+        } catch (error) {
+          console.error('Error loading data:', error);
+          // Handle error - maybe show error message
+        } finally {
+          setLoading(false);
+        }
       }
       loadData();
     }, []);
 
-    if(loading) {
-      return <div>Loading...</div>;
-    }
  
+  if (Loading) {
+    return <Loading />;
+  }
    
   return (
-    <Table.Table className="table">
-      <Table.TableHeader className="table-header">
-        <Table.TableRow className="table-row">
-          {columns.map((column) => (
-            <Table.TableCell key={column.key} className="table-cell">{column.label}</Table.TableCell>
+    <>
+      <Table.Table className="table">
+        <Table.TableHeader className="table-header">
+          <Table.TableRow className="table-row">
+            {columns.map((column) => (
+              <Table.TableCell key={column.key} className="table-cell">{column.label}</Table.TableCell>
+            ))}
+          </Table.TableRow>
+        </Table.TableHeader>
+        <Table.TableBody>
+          {data && data.length > 0 && data.map((item: any) => (
+            <Table.TableRow 
+            onClick={() => redirect(`/details/${encodeURIComponent(item.reference)}`)} 
+            key={item.reference} 
+            className="table-row">
+            {columns.map((column) => (
+                <Table.TableCell key={column.key} className="table-cell">
+                  {item[column.key as keyof typeof item]}
+                </Table.TableCell>
+            ))}
+          </Table.TableRow>
           ))}
-        </Table.TableRow>
-      </Table.TableHeader>
-      <Table.TableBody>
-        {data && data.length > 0 && data.map((item: any) => (
-        
-        <Table.TableRow 
-        onClick={() => redirect(`/details/${encodeURIComponent(item.reference)}`)} key={item.reference} className="table-row">
-          {columns.map((column) => (
-            <Table.TableCell key={column.key} className="table-cell">
-              {item[column.key as keyof typeof item]}</Table.TableCell>
-          ))}
-        </Table.TableRow>
-        
-      ))}
-
-      </Table.TableBody>
-    </Table.Table>
+        </Table.TableBody>
+      </Table.Table>
+    </>
   );
 }
