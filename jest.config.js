@@ -1,3 +1,4 @@
+/* eslint-disable */
 const nextJest = require('next/jest')
 
 const createJestConfig = nextJest({
@@ -15,12 +16,10 @@ const customJestConfig = {
     '**/?(*.)+(spec|test).[jt]s?(x)'
   ],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', {
-      presets: [
-        ['@babel/preset-env', { targets: { node: 'current' } }],
-        '@babel/preset-react',
-        '@babel/preset-typescript',
-      ],
+    '^.+\\.(js|jsx|ts|tsx)$': ['ts-jest', {
+      tsconfig: {
+        jsx: 'react',
+      },
     }],
   },
 }
