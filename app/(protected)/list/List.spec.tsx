@@ -13,10 +13,11 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock the useLoading hook
+let mockLoading = false;
 jest.mock('@/app/hooks/useLoading/useLoading', () => ({
   useLoading: () => ({
     setLoading: jest.fn(),
-    Loading: null, // Start with no loading state
+    Loading: mockLoading ? 'Loading...' : null,
   }),
 }));
 
