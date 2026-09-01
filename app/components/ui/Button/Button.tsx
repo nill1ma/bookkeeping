@@ -6,8 +6,9 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary" | "danger";
   cursor?: "pointer" | "default" | "not-allowed";
   className?: string;
+  onClick?: () => void;
 };
 
-export default function Button({ children, variant = "primary", cursor = "pointer", className = "" }: ButtonProps) {
-  return <button className={`button button--${variant} cursor-${cursor} ${className}`}>{children}</button>;
+export default function Button({ children, variant = "primary", cursor = "pointer", className = "", onClick }: ButtonProps) {
+  return <button onClick={onClick} className={`button button--${variant} cursor-${cursor} ${className}`}>{children}</button>;
 }

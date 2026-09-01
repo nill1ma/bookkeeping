@@ -1,12 +1,14 @@
 "use client"
 
-import Input from "@/app/components/ui/Input/Input";
 import Button from "@/app/components/ui/Button/Button";
-import { login } from "@/app/services/auth/auth"
+import { login, signup } from "@/app/services/auth/auth"
 import { useState } from "react"
+import "./styles.css"
+import LoginForm from "../components/forms/LoginForm/LoginForm";
 
 export default function Login() {
   const [error, setError] = useState<string | null>(null)
+  const [isCreating, setIsCreating] = useState(false)
 
   async function handleSubmit(formData: FormData) {
     setError(null)
@@ -16,8 +18,16 @@ export default function Login() {
     }
   }
 
+  async function handleCreateAccount(formData: FormData) {
+    setError(null)
+    const result = await signup(formData)
+    if (result?.error) {
+      setError(result.error)
+    }
+  }
+
   return (
-    <div className="max-w-md mx-auto p-6">
+    <div className="mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Login</h1>
       
       {error && (
@@ -25,24 +35,29 @@ export default function Login() {
           {error}
         </div>
       )}
-      
-      <form action={handleSubmit}>
-        <Input 
-          placeholder="user@example.com" 
-          label="Email" 
-          name="email" 
-          type="email" 
-          required
-        />
-        <Input 
-          placeholder="password" 
-          label="Password" 
-          name="password" 
-          type="password" 
-          required
-        />
-        <Button variant="primary" type="submit">Login</Button>
+
+      <main className="border w-full flex gap-4">
+  <form action={handleSubmit} className={isCreating ? "w-1/2" : "w-full"}>
+    <LoginForm />
+    <Button className="mt-3" variant="primary" type="submit">Login</Button>
+    <p className="mt-3 text-sm text-gray-500">Don&​apos;t have an account? <a href="#" onClick={() => setIsCreating(true)} className="text-blue-500">Register</a></p>
+  </form>
+  {
+    isCreating && (
+      <form action={handleCreateAccount} className="w-1/2">
+        <LoginForm />
+        <Button className="mt-3" variant="primary" type="submit">Create</Button>
+        <Button className="mt-3" 
+          variant="secondary" 
+          type="button" 
+          onClick={() => setIsCreating(false)}>
+          Cancel
+        </Button>
       </form>
+    )
+  }
+</main>
+      
     </div>
   )
 }

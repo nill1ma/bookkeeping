@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.login-button {
+    @apply mt-1.5
+}

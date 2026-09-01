@@ -95,10 +95,10 @@ describe('List Component', () => {
       render(<List />);
 
       await waitFor(() => {
-        expect(screen.getByText('Reference')).toBeInTheDocument();
-        expect(screen.getByText('Incomings')).toBeInTheDocument();
-        expect(screen.getByText('Expenses')).toBeInTheDocument();
-        expect(screen.getByText('Net Income')).toBeInTheDocument();
+        expect(screen.getByText('Reference').first()).toBeVisible();
+        expect(screen.getByText('Incomings').first()).toBeVisible();
+        expect(screen.getByText('Expenses').first()).toBeVisible();
+        expect(screen.getByText('Net Income').first()).toBeVisible();
       });
     });
 
@@ -109,8 +109,8 @@ describe('List Component', () => {
       render(<List />);
 
       await waitFor(() => {
-        expect(screen.getByText('01/2024')).toBeInTheDocument();
-        expect(screen.getByText('02/2024')).toBeInTheDocument();
+        expect(screen.getByText('01/2024').first()).toBeVisible();
+        expect(screen.getByText('02/2024').first()).toBeVisible();
       });
     });
 
@@ -121,8 +121,8 @@ describe('List Component', () => {
       render(<List />);
 
       await waitFor(() => {
-        expect(screen.getByText('5000')).toBeInTheDocument(); // Incoming value
-        expect(screen.getByText('1500')).toBeInTheDocument(); // Expense value
+        expect(screen.getByText('5000').first()).toBeVisible(); // Incoming value
+        expect(screen.getByText('1500').first()).toBeVisible(); // Expense value
       });
     });
   });

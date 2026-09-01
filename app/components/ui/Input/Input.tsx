@@ -3,14 +3,16 @@ import "./styles.css";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
-  className?: string;
+  inputClassName?: string;
+  containerClassName?: string;
+  labelClassName?: string;
 };
 
-export default function Input({ label, className, ...props }: InputProps) {
+export default function Input({ label, inputClassName, containerClassName, labelClassName, ...props }: InputProps) {
   return (
-    <div className="input-control">
-      <label>{label}</label>
-      <input className={className} {...props} />
+    <div className={`input-control ${containerClassName || ""}`}>
+      <label className={labelClassName || ""}>{label}</label>
+      <input className={inputClassName} {...props} />
     </div>
   );
 }

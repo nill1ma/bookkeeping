@@ -5,9 +5,13 @@ import { Database } from "@/app/lib/supabase.types";
 
 export async function getExpenses() {
   const supabase = await createClient()
+  
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) throw new Error("Usuário não autenticado")
   const { data, error } = await supabase
     .from('expenses')
     .select('*')
+    .eq('user_id', user.id)
   if (error) throw error.message
   return data
 
@@ -15,10 +19,13 @@ export async function getExpenses() {
 
 export async function getExpenseByReference(reference: string) {
   const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) throw new Error("Usuário não autenticado")
   const { data, error } = await supabase
     .from('expenses')
     .select('*')
     .eq('reference', reference)
+    .eq('user_id', user.id)
   if (error) throw error.message
   return data
 }

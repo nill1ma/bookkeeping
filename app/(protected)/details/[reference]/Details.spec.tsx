@@ -63,7 +63,7 @@ describe('Details Component', () => {
 
       render(<Details />);
 
-      expect(screen.getByText('Reference: 01/2024')).toBeInTheDocument();
+      expect(screen.getByText('Reference: 01/2024').first()).toBeVisible();
     });
 
     it('should handle special characters in reference', () => {
@@ -73,7 +73,7 @@ describe('Details Component', () => {
 
       render(<Details />);
 
-      expect(screen.getByText('Reference: 01/2024 Test')).toBeInTheDocument();
+      expect(screen.getByText('Reference: 01/2024 Test').first()).toBeVisible();
     });
   });
 
