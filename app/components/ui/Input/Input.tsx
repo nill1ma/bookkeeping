@@ -11,8 +11,8 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 export default function Input({ label, inputClassName, containerClassName, labelClassName, ...props }: InputProps) {
   return (
     <div className={`input-control ${containerClassName || ""}`}>
-      <label className={labelClassName || ""}>{label}</label>
-      <input className={inputClassName} {...props} />
+      <label htmlFor={props.id} className={labelClassName || ""}>{label}</label>
+      <input id={props.id} className={inputClassName} {...props} />
     </div>
   );
 }

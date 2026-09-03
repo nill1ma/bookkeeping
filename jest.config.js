@@ -15,6 +15,9 @@ const customJestConfig = {
     '**/__tests__/**/*.[jt]s?(x)',
     '**/?(*.)+(spec|test).[jt]s?(x)'
   ],
+  testPathIgnorePatterns: [
+    '/e2e/',
+  ],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': ['ts-jest', {
       tsconfig: {

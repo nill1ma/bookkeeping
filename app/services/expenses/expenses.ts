@@ -10,7 +10,7 @@ export async function getExpenses() {
   if (authError || !user) throw new Error("Usuário não autenticado")
   const { data, error } = await supabase
     .from('expenses')
-    .select('*')
+    .select('id, reference, value')
     .eq('user_id', user.id)
   if (error) throw error.message
   return data
@@ -23,7 +23,7 @@ export async function getExpenseByReference(reference: string) {
   if (authError || !user) throw new Error("Usuário não autenticado")
   const { data, error } = await supabase
     .from('expenses')
-    .select('*')
+    .select('id, value, destination')
     .eq('reference', reference)
     .eq('user_id', user.id)
   if (error) throw error.message

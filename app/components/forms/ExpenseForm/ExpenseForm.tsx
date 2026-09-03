@@ -3,6 +3,8 @@ import { z } from "zod"
 import { createExpense } from "@/app/services/expenses/expenses"
 import { useFormHandler } from "../useFormHandler"
 import Button from "../../ui/Button/Button"
+import { FormattedMessage, useIntl } from "react-intl"
+import Input from "../../ui/Input/Input"
 
 const expenseSchema = z.object({
   destination: z.string().min(1, "Destination is required"),
@@ -11,6 +13,7 @@ const expenseSchema = z.object({
 })
 
 export default function ExpenseForm({ onSuccess }: { onSuccess?: () => void }) {
+  const { formatMessage } = useIntl()
   const { register, handleSubmit, getErrorMessage } = useFormHandler(
     expenseSchema,
     async (data) => {
@@ -21,19 +24,18 @@ export default function ExpenseForm({ onSuccess }: { onSuccess?: () => void }) {
 
   return (
     <form onSubmit={handleSubmit} className="form">
-      <label>Destination</label>
-      <input {...register("destination")} className="input" />
+      <Input label={formatMessage({ id: "create.expenses.destination" })} {...register("destination")} className="input" />
       {getErrorMessage("destination") && <span>{getErrorMessage("destination")}</span>}
       
-      <label>Reference</label>
-      <input {...register("reference")} className="input" />
+      <Input label={formatMessage({ id: "create.reference" })} type="month" {...register("reference")} className="input" />
       {getErrorMessage("reference") && <span>{getErrorMessage("reference")}</span>}
       
-      <label>Value</label>
-      <input type="number" {...register("value", { valueAsNumber: true })} className="input" />
+      <Input label={formatMessage({ id: "create.value" })} type="number" {...register("value", { valueAsNumber: true })} className="input" />
       {getErrorMessage("value") && <span>{getErrorMessage("value")}</span>}
       
-      <Button className="button" variant="primary" type="submit">Submit</Button>
+      <Button className="button" variant="primary" type="submit">
+        <FormattedMessage id="create.submit" />
+      </Button>
     </form>
   )
 }

@@ -5,5 +5,9 @@
 }
 
 .card-item {
-    @apply p-2 flex flex-col;
+    @apply p-2 flex gap-5;
+}
+
+.label{
+    @apply font-semibold capitalize;
 }

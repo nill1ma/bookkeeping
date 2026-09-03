@@ -26,7 +26,7 @@ test.describe('Details Page', () => {
     await page.goto('/details/09%2F2026');
     
     await expect(page).toHaveURL(/\/details\//);
-    await expect(page.locator('body')).toContainText('Reference:');
+    await expect(page.locator('body')).toContainText('Reference');
   });
 
   test('should display reference correctly', async ({ page }) => {
@@ -34,21 +34,21 @@ test.describe('Details Page', () => {
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     
     // Check that reference is displayed (flexible matching)
-    await expect(page.getByText(/Reference:/)).toBeVisible();
+    await expect(page.getByText(/Reference/)).toBeVisible();
   });
 
   test('should display incomings section', async ({ page }) => {
     await page.goto('/details/09%2F2026');
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     
-    await expect(page.getByText('Incomings:')).toBeVisible();
+    await expect(page.getByText('Incomings')).toBeVisible();
   });
 
   test('should display expenses section', async ({ page }) => {
     await page.goto('/details/09%2F2026');
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     
-    await expect(page.getByText('Expenses:')).toBeVisible();
+    await expect(page.getByText('Expenses')).toBeVisible();
   });
 
   test('should display card containers', async ({ page }) => {
@@ -83,7 +83,7 @@ test.describe('Details Page', () => {
     await page.waitForLoadState('networkidle', { timeout: 15000 });
     
     // Verify content is displayed
-    await expect(page.getByText(/Reference:/)).toBeVisible();
+    await expect(page.getByText(/Reference/)).toBeVisible();
   });
 
   test('should handle different references', async ({ page }) => {
@@ -93,7 +93,7 @@ test.describe('Details Page', () => {
     
     // Check that we're on the right page and reference is shown
     await expect(page).toHaveURL(/\/details\/01%2F2024/);
-    await expect(page.getByText(/Reference:/)).toBeVisible();
+    await expect(page.getByText(/Reference/)).toBeVisible();
   });
 
   test('should handle special characters in reference', async ({ page }) => {

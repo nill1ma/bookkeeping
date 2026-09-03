@@ -9,7 +9,7 @@ export function useFormHandler<T extends z.ZodSchema>(
 ) {
   type FormData = z.infer<T>
   
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema)
   })
 
@@ -28,6 +28,7 @@ export function useFormHandler<T extends z.ZodSchema>(
     getErrorMessage: (fieldName: keyof FormData) => {
       const error = errors[fieldName]
       return error?.message as string | undefined
-    }
+    },
+    watch,
   }
 }

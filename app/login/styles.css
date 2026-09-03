@@ -3,3 +3,18 @@
 .login-button {
     @apply mt-1.5
 }
+
+.login-button[disabled] {
+    @apply opacity-50 cursor-not-allowed
+}
+.input-field[disabled]{
+    @apply opacity-50 cursor-not-allowed
+}
+
+.input-control-button {
+    @apply mt-3 flex justify-between
+}
+
+.login-form-disabled {
+    @apply opacity-23
+}

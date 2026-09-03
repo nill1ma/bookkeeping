@@ -3,8 +3,6 @@ import Details from './page';
 import { getIncomingByReference } from '@/app/services/incomings/incomings';
 import { getExpenseByReference } from '@/app/services/expenses/expenses';
 import { useParams } from 'next/navigation';
-import CardContainer from '@/app/components/card/card';
-import CardItem from '@/app/components/card/cardItem';
 
 // Mock the API calls
 jest.mock('@/app/services/incomings/incomings');
@@ -23,8 +21,22 @@ jest.mock('@/app/hooks/useLoading/useLoading', () => ({
 }));
 
 // Mock the card components
-jest.mock('@/app/components/card/card');
-jest.mock('@/app/components/card/cardItem');
+jest.mock('@/app/components/card/card', () => {
+  return function CardContainer({ children }) {
+    return <div data-testid="card-container">{children}</div>;
+  };
+});
+
+jest.mock('@/app/components/card/cardItem', () => {
+  return function CardItem({ label, value, className }) {
+    return (
+      <div data-testid="card-item" className={className}>
+        <span data-testid="label">{label}</span>
+        <span data-testid="value">{value}</span>
+      </div>
+    );
+  };
+});
 
 describe('Details Component', () => {
   const mockIncomings = [
@@ -41,18 +53,6 @@ describe('Details Component', () => {
     jest.clearAllMocks();
     mockLoading = false;
     (useParams as jest.Mock).mockReturnValue({ reference: '01%2F2024' });
-    
-    // Setup card component mocks
-    (CardContainer as jest.Mock).mockImplementation(({ children }) => (
-      <div data-testid="card-container">{children}</div>
-    ));
-    
-    (CardItem as jest.Mock).mockImplementation(({ label, value, className }) => (
-      <div data-testid="card-item" className={className}>
-        <span data-testid="label">{label}</span>
-        <span data-testid="value">{value}</span>
-      </div>
-    ));
   });
 
   describe('URL Parameter Handling', () => {
@@ -63,7 +63,9 @@ describe('Details Component', () => {
 
       render(<Details />);
 
-      expect(screen.getByText('Reference: 01/2024').first()).toBeVisible();
+      const referenceElements = screen.getAllByText('details.reference');
+      expect(referenceElements.length).toBeGreaterThan(0);
+      expect(referenceElements[0]).toBeVisible();
     });
 
     it('should handle special characters in reference', () => {
@@ -73,7 +75,9 @@ describe('Details Component', () => {
 
       render(<Details />);
 
-      expect(screen.getByText('Reference: 01/2024 Test').first()).toBeVisible();
+      const referenceTestElements = screen.getAllByText('details.reference');
+      expect(referenceTestElements.length).toBeGreaterThan(0);
+      expect(referenceTestElements[0]).toBeVisible();
     });
   });
 
@@ -142,13 +146,13 @@ describe('Details Component', () => {
       render(<Details />);
 
       await waitFor(() => {
-        expect(screen.getByText('Incomings:')).toBeInTheDocument();
+        expect(screen.getByText('details.incomings')).toBeInTheDocument();
         const cardItems = screen.getAllByTestId('card-item');
         
-        // Should only show 'origin' and 'value' properties
+        // Should show data values
         const labels = cardItems.map(item => item.querySelector('[data-testid="label"]')?.textContent);
-        expect(labels).toContain('origin');
-        expect(labels).toContain('value');
+        expect(labels).toContain('Salary');
+        expect(labels).toContain('Bonus');
       });
     });
 
@@ -159,13 +163,13 @@ describe('Details Component', () => {
       render(<Details />);
 
       await waitFor(() => {
-        expect(screen.getByText('Expenses:')).toBeInTheDocument();
+        expect(screen.getByText('details.expenses')).toBeInTheDocument();
         const cardItems = screen.getAllByTestId('card-item');
         
-        // Should only show 'destination' and 'value' properties
+        // Should show data values
         const labels = cardItems.map(item => item.querySelector('[data-testid="label"]')?.textContent);
-        expect(labels).toContain('destination');
-        expect(labels).toContain('value');
+        expect(labels).toContain('Rent');
+        expect(labels).toContain('Food');
       });
     });
 
@@ -191,8 +195,8 @@ describe('Details Component', () => {
 
       await waitFor(() => {
         const cardItems = screen.getAllByTestId('card-item');
-        // 2 items * 2 properties each = 4 card items
-        expect(cardItems.length).toBeGreaterThanOrEqual(4);
+        // 2 incoming items = 2 card items
+        expect(cardItems.length).toBeGreaterThanOrEqual(2);
       });
     });
   });
@@ -205,7 +209,7 @@ describe('Details Component', () => {
       render(<Details />);
 
       await waitFor(() => {
-        expect(screen.getByText('Reference: 01/2024')).toBeInTheDocument();
+        expect(screen.getByText('details.reference')).toBeInTheDocument();
       });
     });
 
@@ -216,8 +220,8 @@ describe('Details Component', () => {
       render(<Details />);
 
       await waitFor(() => {
-        expect(screen.getByText('Incomings:')).toBeInTheDocument();
-        expect(screen.getByText('Expenses:')).toBeInTheDocument();
+        expect(screen.getByText('details.incomings')).toBeInTheDocument();
+        expect(screen.getByText('details.expenses')).toBeInTheDocument();
       });
     });
 
@@ -247,8 +251,8 @@ describe('Details Component', () => {
 
       await waitFor(() => {
         expect(screen.queryByText('should not show')).not.toBeInTheDocument();
-        expect(screen.getByText('origin')).toBeInTheDocument();
-        expect(screen.getByText('value')).toBeInTheDocument();
+        expect(screen.getByText('Salary')).toBeInTheDocument();
+        expect(screen.getByText('5000')).toBeInTheDocument();
       });
     });
 
@@ -264,8 +268,8 @@ describe('Details Component', () => {
 
       await waitFor(() => {
         expect(screen.queryByText('should not show')).not.toBeInTheDocument();
-        expect(screen.getByText('destination')).toBeInTheDocument();
-        expect(screen.getByText('value')).toBeInTheDocument();
+        expect(screen.getByText('Rent')).toBeInTheDocument();
+        expect(screen.getByText('1500')).toBeInTheDocument();
       });
     });
   });

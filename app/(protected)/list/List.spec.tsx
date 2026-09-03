@@ -95,10 +95,21 @@ describe('List Component', () => {
       render(<List />);
 
       await waitFor(() => {
-        expect(screen.getByText('Reference').first()).toBeVisible();
-        expect(screen.getByText('Incomings').first()).toBeVisible();
-        expect(screen.getByText('Expenses').first()).toBeVisible();
-        expect(screen.getByText('Net Income').first()).toBeVisible();
+        const allReferences = screen.getAllByText('Reference');
+        expect(allReferences.length).toBeGreaterThan(0);
+        expect(allReferences[0]).toBeVisible();
+        
+        const allIncomings = screen.getAllByText('Incomings');
+        expect(allIncomings.length).toBeGreaterThan(0);
+        expect(allIncomings[0]).toBeVisible();
+        
+        const allExpenses = screen.getAllByText('Expenses');
+        expect(allExpenses.length).toBeGreaterThan(0);
+        expect(allExpenses[0]).toBeVisible();
+        
+        const allNetIncome = screen.getAllByText('Net Income');
+        expect(allNetIncome.length).toBeGreaterThan(0);
+        expect(allNetIncome[0]).toBeVisible();
       });
     });
 
@@ -109,8 +120,13 @@ describe('List Component', () => {
       render(<List />);
 
       await waitFor(() => {
-        expect(screen.getByText('01/2024').first()).toBeVisible();
-        expect(screen.getByText('02/2024').first()).toBeVisible();
+        const all01_2024 = screen.getAllByText('01/2024');
+        expect(all01_2024.length).toBeGreaterThan(0);
+        expect(all01_2024[0]).toBeVisible();
+        
+        const all02_2024 = screen.getAllByText('02/2024');
+        expect(all02_2024.length).toBeGreaterThan(0);
+        expect(all02_2024[0]).toBeVisible();
       });
     });
 
@@ -121,8 +137,13 @@ describe('List Component', () => {
       render(<List />);
 
       await waitFor(() => {
-        expect(screen.getByText('5000').first()).toBeVisible(); // Incoming value
-        expect(screen.getByText('1500').first()).toBeVisible(); // Expense value
+        const all5000 = screen.getAllByText('5000');
+        expect(all5000.length).toBeGreaterThan(0);
+        expect(all5000[0]).toBeVisible();
+        
+        const all1500 = screen.getAllByText('1500');
+        expect(all1500.length).toBeGreaterThan(0);
+        expect(all1500[0]).toBeVisible();
       });
     });
   });

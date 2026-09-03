@@ -3,6 +3,8 @@ import { useFormHandler } from "../useFormHandler";
 import { createIncoming } from "@/app/services/incomings/incomings";
 import { z } from "zod";
 import Button from "../../ui/Button/Button";
+import { FormattedMessage, useIntl } from "react-intl";
+import Input from "../../ui/Input/Input";
 
 const incomingSchema = z.object({
   origin: z.string().min(1, "Origin is required"),
@@ -11,7 +13,7 @@ const incomingSchema = z.object({
 });
 
 export default function IncomingForm({ onSuccess }: { onSuccess?: () => void }) {
-  
+  const { formatMessage } = useIntl()
   const { register, handleSubmit, getErrorMessage } = useFormHandler(
       incomingSchema,
       async (data) => {
@@ -22,18 +24,18 @@ export default function IncomingForm({ onSuccess }: { onSuccess?: () => void }) 
 
   return (
     <form onSubmit={handleSubmit} className="form">
-      <label htmlFor="origin">Origin</label>
-      <input id="origin" className="input" {...register("origin")} />
+      
+      <Input label={formatMessage({ id: "create.incomings.origin" })} id="origin" className="input" {...register("origin")} />
       {getErrorMessage("origin") && <span>{getErrorMessage("origin")}</span>}
       
-      <label htmlFor="reference">Reference</label>
-      <input id="reference" type="text" className="input" {...register("reference")} />
+      <Input label={formatMessage({ id: "create.reference" })} id="reference" type="month" className="input" {...register("reference")} />
       {getErrorMessage("reference") && <span>{getErrorMessage("reference")}</span>}
-      
-      <label htmlFor="value">Value</label>
-      <input id="value" type="number" className="input" {...register("value", { valueAsNumber: true })} />
+     
+      <Input label={formatMessage({ id: "create.value" })} id="value" type="number" className="input" {...register("value", { valueAsNumber: true })} />
       {getErrorMessage("value") && <span>{getErrorMessage("value")}</span>}
-      <Button className="button" variant="primary" type="submit">Submit</Button>
+      <Button className="button" variant="primary" type="submit">
+        <FormattedMessage id="create.submit" />
+      </Button>
     </form>
   )
 }

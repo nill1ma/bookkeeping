@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 
 test.describe('List Page', () => {
   test.beforeEach(async ({ page }) => {
-    
     await page.goto('/login');
     
     await page.fill('input[name="email"]', process.env.TEST_EMAIL || 'test@example.com');

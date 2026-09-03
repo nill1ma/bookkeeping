@@ -9,7 +9,7 @@ export async function getIncomings() {
   if (authError || !user) throw new Error("Usuário não autenticado")
   const { data, error } = await supabase
     .from('incomings')
-    .select('*')
+    .select('id, reference, value')
     .eq('user_id', user.id)
   if (error) throw error.message
   return data
@@ -22,7 +22,7 @@ export async function getIncomingByReference(reference: string) {
   if (authError || !user) throw new Error("Usuário não autenticado")
   const { data, error } = await supabase
     .from('incomings')
-    .select('*')
+    .select('id, value, origin')
     .eq('reference', reference)
     .eq('user_id', user.id)
   if (error) throw error.message
