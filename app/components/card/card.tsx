@@ -2,9 +2,9 @@
 
 import './styles.css'
 
-export default function CardContainer({children}: {children: React.ReactNode}) {
+export default function CardContainer({children, className}: {children: React.ReactNode, className?: string}) {
     return (
-        <div className="card-container">
+        <div className={`card-container ${className || ''}`}>
             {children}
         </div>
     )

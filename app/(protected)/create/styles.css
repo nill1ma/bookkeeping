@@ -30,3 +30,7 @@
 .active {
   @apply border-b-2 border-[#65a30d] text-[#a3e635] font-medium;
 }
+
+.title {
+  @apply p-5 bg-[#a3e635] text-[#1a1a1a] font-black my-2;
+}

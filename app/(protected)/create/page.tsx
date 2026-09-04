@@ -21,8 +21,8 @@ export default function CreateForm() {
         <li className={`tab ${controlTab === "expenses" ? "active" : ""}`} onClick={() => setControlTab("expenses")}>Expenses</li>
       </ul>
     </nav>
-    <h1>
-      {controlTab === "incomings" ? "Incomings" : "Expenses"}
+    <h1 className="title">
+      Create {controlTab === "incomings" ? "Incoming" : "Expense"}
     </h1>
       {controlTab === "incomings" ? (
         <IncomingForm onSuccess={handleSuccess} />

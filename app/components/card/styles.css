@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .card-container {
-    @apply rounded-sm w-full border border-gray-200;
+    @apply rounded-sm w-full;
 }
 
 .card-item {
