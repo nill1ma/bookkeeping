@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
 h3 {
-    @apply rounded mb-2 mt-2 py-3 px-2 bg-[#a3e635] text-[#1a1a1a] font-black;
+    @apply rounded mb-2 py-3 px-2 bg-[#a3e635] text-[#1a1a1a] font-black;
 }

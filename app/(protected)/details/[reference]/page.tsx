@@ -61,12 +61,12 @@ export default function Details() {
 
   return (
     <>
-      <h3 className="p-2">
+      <h3>
         <FormattedMessage id="details.reference" values={{ reference }} />
       </h3>
-      <div className="flex h-[80%]">
+      <div className="flex">
         <article className="flex gap-2">
-          <div>
+          <div className="p-0">
             <h3>
               <FormattedMessage id="details.incomings" />
             </h3>
@@ -109,6 +109,7 @@ export default function Details() {
           id="details"
           dataAxis={["Incomings", "Expenses", "Net Income"]}
           data={[charts.incomings, charts.expenses, charts.netIncome]}
+          className="w-full h-full border flex"
         />
       </div>
     </>

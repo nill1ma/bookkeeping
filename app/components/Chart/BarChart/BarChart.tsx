@@ -4,12 +4,14 @@ type BarChartProps = {
   id: string;
   dataAxis: string[];
   data: number[];
+  className?: string;
 };
 
 export default function BarChartComponent({
   id,
   dataAxis,
   data,
+  className,
 }: BarChartProps) {
   return (
     <BarChart
@@ -18,6 +20,10 @@ export default function BarChartComponent({
           id,
           data: dataAxis,
           height: 8,
+          colorMap: {
+            type: 'continuous',
+            color: ['white', 'green'],
+          },
         },
       ]}
       series={[
@@ -26,6 +32,7 @@ export default function BarChartComponent({
         },
       ]}
       height={300}
+      className={`${className}`}
     />
   );
 }

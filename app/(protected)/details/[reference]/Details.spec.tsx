@@ -11,12 +11,25 @@ jest.mock('next/navigation', () => ({
   useParams: jest.fn(),
 }));
 
+// Mock react-intl so FormattedMessage just renders its id (no IntlProvider needed)
+jest.mock('react-intl', () => ({
+  FormattedMessage: ({ id }: { id: string }) => <>{id}</>,
+}));
+
+// Mock the chart component — it's irrelevant to these tests and can crash jsdom
+jest.mock('@/app/components/Chart/BarChart/BarChart', () => {
+  return function BarChartComponent() {
+    return <div data-testid="bar-chart" />;
+  };
+});
+
 // Mock the useLoading hook
 let mockLoading = false;
 jest.mock('@/app/hooks/useLoading/useLoading', () => ({
   useLoading: () => ({
     setLoading: jest.fn(),
-    Loading: mockLoading ? 'Loading...' : null,
+    // Loading must be a component (or null), never a raw string, since it's rendered as <Loading />
+    Loading: mockLoading ? () => <div>Loading...</div> : null,
   }),
 }));
 
@@ -104,7 +117,6 @@ describe('Details Component', () => {
         expect(getIncomingByReference).toHaveBeenCalledTimes(1);
       });
 
-      // Change reference
       (useParams as jest.Mock).mockReturnValue({ reference: '02%2F2024' });
       rerender(<Details />);
 
@@ -121,7 +133,7 @@ describe('Details Component', () => {
 
       await waitFor(() => {
         const cardContainers = screen.queryAllByTestId('card-container');
-        expect(cardContainers).toHaveLength(2); // Both containers should render
+        expect(cardContainers).toHaveLength(2);
       });
     });
 
@@ -131,7 +143,6 @@ describe('Details Component', () => {
 
       render(<Details />);
 
-      // Should not crash, just handle the error
       await waitFor(() => {
         expect(getIncomingByReference).toHaveBeenCalledTimes(1);
       });
@@ -148,9 +159,9 @@ describe('Details Component', () => {
       await waitFor(() => {
         expect(screen.getByText('details.incomings')).toBeInTheDocument();
         const cardItems = screen.getAllByTestId('card-item');
-        
-        // Should show data values
-        const labels = cardItems.map(item => item.querySelector('[data-testid="label"]')?.textContent);
+        const labels = cardItems.map(
+          (item) => item.querySelector('[data-testid="label"]')?.textContent
+        );
         expect(labels).toContain('Salary');
         expect(labels).toContain('Bonus');
       });
@@ -165,9 +176,9 @@ describe('Details Component', () => {
       await waitFor(() => {
         expect(screen.getByText('details.expenses')).toBeInTheDocument();
         const cardItems = screen.getAllByTestId('card-item');
-        
-        // Should show data values
-        const labels = cardItems.map(item => item.querySelector('[data-testid="label"]')?.textContent);
+        const labels = cardItems.map(
+          (item) => item.querySelector('[data-testid="label"]')?.textContent
+        );
         expect(labels).toContain('Rent');
         expect(labels).toContain('Food');
       });
@@ -195,7 +206,6 @@ describe('Details Component', () => {
 
       await waitFor(() => {
         const cardItems = screen.getAllByTestId('card-item');
-        // 2 incoming items = 2 card items
         expect(cardItems.length).toBeGreaterThanOrEqual(2);
       });
     });
@@ -243,7 +253,7 @@ describe('Details Component', () => {
       const extraPropsIncomings = [
         { id: 1, reference: '01/2024', origin: 'Salary', value: 5000, extra: 'should not show' },
       ];
-      
+
       (getIncomingByReference as jest.Mock).mockResolvedValue(extraPropsIncomings);
       (getExpenseByReference as jest.Mock).mockResolvedValue([]);
 
@@ -260,7 +270,7 @@ describe('Details Component', () => {
       const extraPropsExpenses = [
         { id: 1, reference: '01/2024', destination: 'Rent', value: 1500, extra: 'should not show' },
       ];
-      
+
       (getIncomingByReference as jest.Mock).mockResolvedValue([]);
       (getExpenseByReference as jest.Mock).mockResolvedValue(extraPropsExpenses);
 
