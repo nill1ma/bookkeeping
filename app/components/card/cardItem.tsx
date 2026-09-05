@@ -3,7 +3,7 @@
 import './styles.css'
 
 
-export default function CardItem({label, value, className}: {label: string, value: string, className?: string}) {
+export default function CardItem({label, value, className}: {label: string, value: string | number, className?: string}) {
     return (
         <div className={`card-item border-b ${className || ''}`}>
             <label className="label">{label}:</label>

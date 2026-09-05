@@ -2,6 +2,7 @@
 
 import { createClient } from "@/app/lib/supabase";
 import { Database } from "@/app/lib/supabase.types";
+import { Incoming } from "./incomings.types";
 
 export async function getIncomings() {
   const supabase = await createClient()
@@ -16,7 +17,7 @@ export async function getIncomings() {
 
 }
 
-export async function getIncomingByReference(reference: string) {
+export async function getIncomingByReference(reference: string): Promise<Pick<Incoming, 'id' | 'value' | 'origin'>[]> {
   const supabase = await createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (authError || !user) throw new Error("Usuário não autenticado")

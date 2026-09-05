@@ -26,6 +26,7 @@
     "react-dom": "19.2.8",
     "react-hook-form": "^7.86.0",
     "react-intl": "^10.1.23",
+    "supabase": "^2.116.0",
     "yjs": "^13.6.32",
     "zod": "^3.25.76"
   },

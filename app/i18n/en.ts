@@ -16,11 +16,16 @@ export const en = {
   "login.createAccountButton": "Create",
 
 
-  "create.incomings.origin": "Origin",
-  "create.expenses.destination": "Destination",
-  "create.reference": "Reference",
-  "create.value": "Value",
-  "create.submit": "Submit",
+  "create.update.incomings.origin": "Origin",
+  "create.update.expenses.destination": "Destination",
+  "create.update.reference": "Reference",
+  "create.update.value": "Value",
+  "create.update.submit": "Submit",
+  "create.update.tab.incomings": "Incomings",
+  "create.update.tab.expenses": "Expenses",
+  "create.update.title.incomings": "Create Incoming",
+  "create.update.title.expenses": "Create Expense",
+  
 
 
   // Details

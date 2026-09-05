@@ -25,16 +25,16 @@ export default function IncomingForm({ onSuccess }: { onSuccess?: () => void }) 
   return (
     <form onSubmit={handleSubmit} className="form">
       
-      <Input label={formatMessage({ id: "create.incomings.origin" })} id="origin" className="input" {...register("origin")} />
+      <Input label={formatMessage({ id: "create.update.incomings.origin" })} id="origin" className="input" {...register("origin")} />
       {getErrorMessage("origin") && <span>{getErrorMessage("origin")}</span>}
       
-      <Input label={formatMessage({ id: "create.reference" })} id="reference" type="month" className="input" {...register("reference")} />
+      <Input label={formatMessage({ id: "create.update.reference" })} id="reference" type="month" className="input" {...register("reference")} />
       {getErrorMessage("reference") && <span>{getErrorMessage("reference")}</span>}
      
-      <Input label={formatMessage({ id: "create.value" })} id="value" type="number" className="input" {...register("value", { valueAsNumber: true })} />
+      <Input label={formatMessage({ id: "create.update.value" })} id="value" type="number" className="input" {...register("value", { valueAsNumber: true })} />
       {getErrorMessage("value") && <span>{getErrorMessage("value")}</span>}
       <Button className="button" variant="primary" type="submit">
-        <FormattedMessage id="create.submit" />
+        <FormattedMessage id="create.update.submit" />
       </Button>
     </form>
   )

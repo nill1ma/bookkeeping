@@ -24,17 +24,17 @@ export default function ExpenseForm({ onSuccess }: { onSuccess?: () => void }) {
 
   return (
     <form onSubmit={handleSubmit} className="form">
-      <Input label={formatMessage({ id: "create.expenses.destination" })} {...register("destination")} className="input" />
+      <Input label={formatMessage({ id: "create.update.expenses.destination" })} {...register("destination")} className="input" />
       {getErrorMessage("destination") && <span>{getErrorMessage("destination")}</span>}
       
-      <Input label={formatMessage({ id: "create.reference" })} type="month" {...register("reference")} className="input" />
+      <Input label={formatMessage({ id: "create.update.reference" })} type="month" {...register("reference")} className="input" />
       {getErrorMessage("reference") && <span>{getErrorMessage("reference")}</span>}
       
-      <Input label={formatMessage({ id: "create.value" })} type="number" {...register("value", { valueAsNumber: true })} className="input" />
+      <Input label={formatMessage({ id: "create.update.value" })} type="number" {...register("value", { valueAsNumber: true })} className="input" />
       {getErrorMessage("value") && <span>{getErrorMessage("value")}</span>}
       
       <Button className="button" variant="primary" type="submit">
-        <FormattedMessage id="create.submit" />
+        <FormattedMessage id="create.update.submit" />
       </Button>
     </form>
   )

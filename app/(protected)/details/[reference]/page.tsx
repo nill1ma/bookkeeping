@@ -10,10 +10,13 @@ import "./styles.css";
 import { useLoading } from "@/app/hooks/useLoading/useLoading";
 import { FormattedMessage } from "react-intl";
 import BarChartComponent from "@/app/components/Chart/BarChart/BarChart";
+import ReferenceDate from "./ReferenceDate";
+import { Incoming } from "@/app/services/incomings/incomings.types";
+import { Expense } from "@/app/services/expenses/expenses.types";
 
 export default function Details() {
-  const [incomingData, setIncomingData] = useState<any[]>([]);
-  const [expenseData, setExpenseData] = useState<any[]>([]);
+  const [incomingData, setIncomingData] = useState<Pick<Incoming, 'id' | 'value' | 'origin'>[]>([]);
+  const [expenseData, setExpenseData] = useState<Pick<Expense, 'id' | 'value' | 'destination'>[]>([]);
   const [charts, setCharts] = useState<{
     incomings: number;
     expenses: number;
@@ -62,7 +65,7 @@ export default function Details() {
   return (
     <>
       <h3>
-        <FormattedMessage id="details.reference" values={{ reference }} />
+        <ReferenceDate reference={reference} />
       </h3>
       <div className="flex">
         <article className="flex gap-2">
@@ -70,15 +73,15 @@ export default function Details() {
             <h3>
               <FormattedMessage id="details.incomings" />
             </h3>
-            <div className="h-full border border-gray-200">
+            <div className="h-full border">
               <CardContainer>
                 {incomingData.map((item) => {
                   return (
                     <CardItem
                       key={`${item.id}`}
                       label={item.origin}
-                      value={item.value}
-                      className="h-[80%]"
+                      value={item.value as string | number}
+                      className="justify-between"
                     />
                   );
                 })}
@@ -90,14 +93,15 @@ export default function Details() {
             <h3>
               <FormattedMessage id="details.expenses" />
             </h3>
-            <div className="h-full border border-gray-200">
+            <div className="h-full border">
             <CardContainer>
               {expenseData.map((item) => {
                 return (
                   <CardItem
                     key={`${item.id}`}
                     label={item.destination}
-                    value={item.value}
+                    value={item.value as string | number}
+                    className="justify-between"
                   />
                 );
               })}
@@ -109,7 +113,7 @@ export default function Details() {
           id="details"
           dataAxis={["Incomings", "Expenses", "Net Income"]}
           data={[charts.incomings, charts.expenses, charts.netIncome]}
-          className="w-full h-full border flex"
+          className="w-full h-full"
         />
       </div>
     </>

@@ -1,12 +1,12 @@
 "use client";
 import * as Table from "@/app/components/ui/table/Table";
-import { getIncomings } from "@/app/services/incomings/incomings";
-import { getExpenses } from "@/app/services/expenses/expenses";
-import "./styles.css";
-import { aggregateByReference } from "./utils";
-import { useEffect, useState } from "react";
+import { useLoading } from "@/app/hooks/useLoading/useLoading";
+import { getIncomingsExpensesTransactions } from "@/app/services/incomings_expenses_transactions/incomings_expenses_transactions";
 import { redirect } from "next/navigation";
-import {useLoading}  from "@/app/hooks/useLoading/useLoading";
+import { useEffect, useState } from "react";
+import "./styles.css";
+import { IncomingsExpensesTransaction } from "@/app/services/incomings_expenses_transactions/incomings_expenses_transactions.types";
+import CellContent from "./Components/CellComponent";
 
 export default function List() {
     const columns = [
@@ -16,19 +16,16 @@ export default function List() {
       { key: 'net_income', label: 'Net Income' },
     ]
 
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<IncomingsExpensesTransaction[]>([]);
     const { setLoading, Loading } = useLoading();
 
     useEffect(() => {
       async function loadData() {
         try {
           setLoading(true);
-          const [incomings, expenses] = await Promise.all([
-            getIncomings(),
-            getExpenses()
-          ]);
-          const aggregated = aggregateByReference(incomings || [], expenses || []);
-          setData(aggregated);
+          const response = await getIncomingsExpensesTransactions()
+          
+          setData(response);
         } catch (error) {
           console.error('Error loading data:', error);
           // Handle error - maybe show error message
@@ -43,7 +40,11 @@ export default function List() {
   if (Loading) {
     return <Loading />;
   }
-   
+
+  if(data && data.length === 0) {
+    return <div className="flex items-center justify-center h-full">No data</div>;
+  }
+  
   return (
     <>
       <Table.Table className="table">
@@ -55,15 +56,18 @@ export default function List() {
           </Table.TableRow>
         </Table.TableHeader>
         <Table.TableBody>
-          {data && data.length > 0 && data.map((item: any) => (
+          {data.map((item) => (
             <Table.TableRow 
             onClick={() => redirect(`/details/${encodeURIComponent(item.reference)}`)} 
-            key={item.reference} 
+            key={item.id} 
             className="table-row">
             {columns.map((column) => (
-                <Table.TableCell key={column.key} className="table-cell">
-                  {item[column.key as keyof typeof item]}
-                </Table.TableCell>
+                <CellContent
+                  column={column}
+                  item={item}
+                  className="table-cell"
+                  key={column.key}
+                />
             ))}
           </Table.TableRow>
           ))}
