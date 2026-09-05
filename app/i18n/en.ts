@@ -23,8 +23,10 @@ export const en = {
   "create.update.submit": "Submit",
   "create.update.tab.incomings": "Incomings",
   "create.update.tab.expenses": "Expenses",
-  "create.update.title.incomings": "Create Incoming",
-  "create.update.title.expenses": "Create Expense",
+  "create.title.incomings": "Create Incoming",
+  "create.title.expenses": "Create Expense",
+  "update.title.incomings": "Edit Incoming",
+  "update.title.expenses": "Edit Expense",
   
 
 

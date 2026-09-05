@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+.form {
+  @apply flex flex-col gap-4;
+}
+
+.input {
+  @apply border rounded-lg px-4 py-2 focus:outline-none focus:ring-2;
+  @apply border-[#2a2a2a] bg-[#121212] text-[#e5e5e5];
+  --tw-ring-color: #65a30d;
+}
+
+.button {
+  @apply w-25;
+}
+
+.tabs {
+  @apply list-none flex gap-2;
+  @apply border-b border-[#2a2a2a];
+}
+
+.tab {
+  @apply cursor-pointer px-4 py-2 border-b-2 border-transparent;
+}
+
+.tab:hover {
+  @apply bg-[#1f1f1f];
+}
+
+.active {
+  @apply border-b-2 border-[#65a30d] text-[#a3e635] font-medium;
+}
+
+.title {
+  @apply p-5 bg-[#a3e635] text-[#1a1a1a] font-black my-2;
+}

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createExpense, deleteExpense, getExpenseByReference } from "@/app/services/expenses/expenses";
+import { createExpense, deleteExpense, getExpenseByReference, updateExpense, getExpenseById } from "@/app/services/expenses/expenses";
 
-export function useExpenses(reference?: string) {
+export function useExpenses(reference?: string, id?: string) {
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -18,6 +18,20 @@ export function useExpenses(reference?: string) {
       },
     });
 
+    const { data: dataSingleExpense, isLoading: isLoadingSingleExpense } = useQuery({
+        queryKey: ['expense', id],
+        queryFn: () => getExpenseById(id!),
+        enabled: !!id,
+      });
+
+    const { mutate: updateMutation, isPending: isUpdating } = useMutation({
+        mutationFn: updateExpense,
+        mutationKey: ['update-expense'],
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['expenses'] });
+        },
+      });
+
   const { mutate, isPending: isDeleting } = useMutation({
     mutationFn: deleteExpense,
     mutationKey: ['delete-expense'],
@@ -33,5 +47,9 @@ export function useExpenses(reference?: string) {
     isDeleting,
     createMutation,
     isCreating,
+    updateMutation,
+    isUpdating,
+    dataSingleExpense,
+    isLoadingSingleExpense,
   };
 }

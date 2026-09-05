@@ -1,6 +1,7 @@
 import CardContainer from "@/app/components/card/card";
 import CardItem from "@/app/components/card/cardItem";
 import { DeleteForever, EditNote } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 interface Transaction {
   id: string;
@@ -19,6 +20,8 @@ export function TransactionDetailsList<T extends Transaction>({
   labelKey,
   onDelete
 }: TransactionListProps<T>) {
+  const router = useRouter();
+  const mountRout = (item: string[]) => item.includes('origin') ? 'incomings' : 'expenses'
   return (
     <CardContainer>
       {items?.map((item) => {
@@ -30,7 +33,7 @@ export function TransactionDetailsList<T extends Transaction>({
             className="justify-between"
           >
             <div>
-              <EditNote className="cursor-pointer" />
+              <EditNote onClick={() => router.push(`/edit/${mountRout(Object.keys(item))}/${item.id}`)} className="cursor-pointer" />
               <DeleteForever onClick={() => onDelete(item.id)} className="cursor-pointer" />
             </div>
           </CardItem>

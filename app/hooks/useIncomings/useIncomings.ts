@@ -1,7 +1,7 @@
+import { createIncoming, deleteIncoming, getIncomingByReference, getIncomingsById, updateIncoming } from "@/app/services/incomings/incomings";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createIncoming, deleteIncoming, getIncomingByReference } from "@/app/services/incomings/incomings";
 
-export function useIncomings(reference?: string) {
+export function useIncomings(reference?: string, id?: string) {
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -10,9 +10,23 @@ export function useIncomings(reference?: string) {
     enabled: !!reference,
   });
 
+  const { data: dataSingleIncoming, isLoading: isLoadingSingleIncoming } = useQuery({
+    queryKey: ['incoming', id],
+    queryFn: () => getIncomingsById(id!),
+    enabled: !!id,
+  });
+
   const { mutate: createMutation, isPending: isCreating } = useMutation({
     mutationFn: createIncoming,
     mutationKey: ['create-incoming'],
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['incomings'] });
+    },
+  });
+
+const { mutate: updateMutation, isPending: isUpdating } = useMutation({
+    mutationFn: updateIncoming,
+    mutationKey: ['update-incoming'],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['incomings'] });
     },
@@ -29,9 +43,13 @@ export function useIncomings(reference?: string) {
   return {
     data,
     isLoading,
+    dataSingleIncoming,
+    isLoadingSingleIncoming,
     deleteMutation: mutate,
     createMutation,
+    updateMutation,
     isCreating,
     isDeleting,
+    isUpdating,
   };
 }
