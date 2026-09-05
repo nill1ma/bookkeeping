@@ -9,5 +9,5 @@
 }
 
 .label{
-    @apply font-semibold capitalize;
+    @apply font-semibold capitalize flex-1;
 }

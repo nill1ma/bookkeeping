@@ -1,10 +1,11 @@
 "use client"
-import { z } from "zod"
-import { createExpense } from "@/app/services/expenses/expenses"
-import { useFormHandler } from "../useFormHandler"
-import Button from "../../ui/Button/Button"
+import Loading from "@/app/components/loading/loading"
+import { useExpenses } from "@/app/hooks/useExpenses/useExpenses"
 import { FormattedMessage, useIntl } from "react-intl"
+import { z } from "zod"
+import Button from "../../ui/Button/Button"
 import Input from "../../ui/Input/Input"
+import { useFormHandler } from "../useFormHandler"
 
 const expenseSchema = z.object({
   destination: z.string().min(1, "Destination is required"),
@@ -14,10 +15,11 @@ const expenseSchema = z.object({
 
 export default function ExpenseForm({ onSuccess }: { onSuccess?: () => void }) {
   const { formatMessage } = useIntl()
+  const { createMutation, isCreating } = useExpenses()
   const { register, handleSubmit, getErrorMessage } = useFormHandler(
     expenseSchema,
     async (data) => {
-      await createExpense(data)
+      createMutation(data)
       onSuccess?.()
     }
   )
@@ -33,8 +35,8 @@ export default function ExpenseForm({ onSuccess }: { onSuccess?: () => void }) {
       <Input label={formatMessage({ id: "create.update.value" })} type="number" {...register("value", { valueAsNumber: true })} className="input" />
       {getErrorMessage("value") && <span>{getErrorMessage("value")}</span>}
       
-      <Button className="button" variant="primary" type="submit">
-        <FormattedMessage id="create.update.submit" />
+      <Button className="button" variant="primary" type="submit" disabled={isCreating}>
+        {isCreating ? <Loading /> : <FormattedMessage id="create.update.submit" />}
       </Button>
     </form>
   )

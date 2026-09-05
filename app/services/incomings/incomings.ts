@@ -2,7 +2,7 @@
 
 import { createClient } from "@/app/lib/supabase";
 import { Database } from "@/app/lib/supabase.types";
-import { Incoming } from "./incomings.types";
+import { Incoming, UpdateIncoming } from "./incomings.types";
 
 export async function getIncomings() {
   const supabase = await createClient()
@@ -31,24 +31,61 @@ export async function getIncomingByReference(reference: string): Promise<Pick<In
 }
 
 export async function createIncoming(
-  // Omitimos o 'id' (gerado pelo banco) e o 'user_id' (injetado pelo backend)
   formData: Omit<Database['public']['Tables']['incomings']['Insert'], 'id' | 'user_id'>
 ) {
   const supabase = await createClient()
 
-  // 1. Pega o usuário logado direto dos cookies seguros do Supabase Auth
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (authError || !user) throw new Error("Usuário não autenticado")
 
-  // 2. Insere os dados juntando o formulário com o ID do usuário verificado
   const { data, error } = await supabase
     .from('incomings')
     .insert({
       ...formData,
-      user_id: user.id // Injeção segura no servidor
+      user_id: user.id
     })
-    .select()        // Garante que o Supabase retorne os dados inseridos
-    .single()        // Avisa que é apenas um objeto (e não uma lista)
+    .select()
+    .single()
+
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function updateIncoming(
+  formData: UpdateIncoming
+) {
+  const supabase = await createClient()
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) throw new Error("Usuário não autenticado")
+
+  const { data, error } = await supabase
+    .from('incomings')
+    .update({
+      origin: formData.origin,
+      value: formData.value, 
+      reference: formData.reference, 
+      user_id: user.id
+    })
+    .eq('id', formData.id)
+    .select()
+
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function deleteIncoming(
+  incoming_id: string
+) {
+  const supabase = await createClient()
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) throw new Error("Usuário não autenticado")
+
+  const { data, error } = await supabase
+    .from('incomings')
+    .delete()
+    .eq('id', incoming_id)
 
   if (error) throw new Error(error.message)
   return data

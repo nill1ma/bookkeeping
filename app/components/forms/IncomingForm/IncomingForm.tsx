@@ -1,10 +1,11 @@
 
 import { useFormHandler } from "../useFormHandler";
-import { createIncoming } from "@/app/services/incomings/incomings";
 import { z } from "zod";
-import Button from "../../ui/Button/Button";
+import Button from "@/app/components/ui/Button/Button";
 import { FormattedMessage, useIntl } from "react-intl";
-import Input from "../../ui/Input/Input";
+import Input from "@/app/components/ui/Input/Input";
+import { useIncomings } from "@/app/hooks/useIncomings/useIncomings";
+import Loading from "@/app/components/loading/loading";
 
 const incomingSchema = z.object({
   origin: z.string().min(1, "Origin is required"),
@@ -14,10 +15,11 @@ const incomingSchema = z.object({
 
 export default function IncomingForm({ onSuccess }: { onSuccess?: () => void }) {
   const { formatMessage } = useIntl()
+  const { createMutation, isCreating } = useIncomings()
   const { register, handleSubmit, getErrorMessage } = useFormHandler(
       incomingSchema,
       async (data) => {
-        await createIncoming(data)
+        createMutation(data)
         onSuccess?.()
       }
     )
@@ -33,8 +35,8 @@ export default function IncomingForm({ onSuccess }: { onSuccess?: () => void }) 
      
       <Input label={formatMessage({ id: "create.update.value" })} id="value" type="number" className="input" {...register("value", { valueAsNumber: true })} />
       {getErrorMessage("value") && <span>{getErrorMessage("value")}</span>}
-      <Button className="button" variant="primary" type="submit">
-        <FormattedMessage id="create.update.submit" />
+      <Button className="button" variant="primary" type="submit" disabled={isCreating}>
+        {isCreating ? <Loading /> : <FormattedMessage id="create.update.submit" />}
       </Button>
     </form>
   )

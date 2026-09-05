@@ -7,3 +7,6 @@ export interface Expense {
   user_id: string;
   reference: string;
 }
+export type DetailsIncomingData = Pick<Expense, 'id' | 'value' | 'destination'>
+export type CreateExpense = Pick<Expense, 'value' | 'destination' | 'reference'>
+export type UpdateExpense = Pick<Expense, 'id' | 'value' | 'destination' | 'reference'>
